@@ -7,14 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>listContacts</ion-title>
+    <ion-buttons end>
+      <button (click)="presentOptions($event)">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="title">Listado</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 
-<ion-content class="home">
+<ion-content class="list-contacts">
 
   <!--
    <button (click)="savefn()">Add Contact</button>
@@ -26,37 +31,37 @@
        </ion-item>
    </ion-list> -->
 
+  <div class="spinner">
+       <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+
+       <h3 *ngIf="noContact"> Nenhum Contato </h3>
+      </div>
 
 
-
-<ion-item-group *ngFor="let group of groupedContacts">
+<ion-item-group *ngFor="let group of groupedContacts" class="alpha_list">
  
-      <ion-item-divider dark>{{group.letter}}</ion-item-divider>
-      <ion-item *ngFor="let contact of group.contacts">
+      <ion-item-divider light>{{group.letter}}</ion-item-divider>
+      <ion-item *ngFor="let contact of group.contacts" (click)='selectContact(contact)' >
         
-           {{contact.displayName}}
+      
+            <ion-icon name="contacts" item-left></ion-icon>
+  
+                 {{contact.name.formatted}}
        </ion-item>
  
     </ion-item-group>
- 
+
+    
 </ion-content>
 
 
-<!-- 
-   <ion-item-group>
+ <ul  class="alpha_sidebar">
+    
+      <li (click)="gotoList(i)"   *ngFor="let letter of alphabet | async; let i = index; let last = last"> 
+          
+           <button dark small clear [style.height]= "last ? '20px' : list_index_margin + 'px'" >{{letter}}</button>
+      </li>
+    </ul>
 
-     
 
-     
-     <ion-list>
-         <ion-item-divider dark>{{cidade}}</ion-item-divider>
-       <ion-item *ngFor="let contact of contacts ">
-        
-           {{contact.displayName}}
-       </ion-item>
-   </ion-list> 
-
-    </ion-item-group> 
-
-  
-</ion-content> -->
+ 

@@ -15,6 +15,7 @@ export class ContactsService {
         
     }
 
+   
 
     arrangeContacts (estado: string) : Promise<{ [key:string]:Contact[]; }>{
 

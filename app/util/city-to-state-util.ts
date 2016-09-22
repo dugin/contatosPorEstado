@@ -6,12 +6,13 @@ export class CityToState {
 
     constructor() {
 
- 
+       
     }
 
 
 
    public rearrangeTelephoneNumbers(contact: Contact[], myState : string ){
+        CityToState.contactsStruct = {};
 
        let resp :string;
 
@@ -21,7 +22,7 @@ export class CityToState {
 
         for(let j = 0; j < contact[i].phoneNumbers.length; j++){
 
-    let tel = contact[i].phoneNumbers[j].value.replace(/ /g,'').replace(/-/g, "").trim();
+    let tel = contact[i].phoneNumbers[j].value.replace(/[{()}]/g, '').replace(/ /g,'').replace(/-/g, "").trim();
  
      if(tel.length >= 8){
           
@@ -34,6 +35,8 @@ export class CityToState {
                 if(tel.length > 15) {
                                         // Ex: +5502121 xxxxx-xxxx
                      resp =  this.findStateFromTelephoneNumber(tel.substr(tel.indexOf('+')+6,2));
+                    
+                     
                   this.initializeArray(contact[i], resp.substring(resp.length-3));
                   break;
 
@@ -41,6 +44,7 @@ export class CityToState {
                     else{
                          // Ex: +55021 xxxxx-xxxx
                   resp =  this.findStateFromTelephoneNumber(tel.substr(tel.indexOf('+')+4,2));
+                 
                   this.initializeArray(contact[i], resp.substring(resp.length-3));
                   break;
                     }
@@ -58,6 +62,7 @@ export class CityToState {
                        else {
                          // Ex: +5521 xxxxx-xxxx
                   resp =  this.findStateFromTelephoneNumber(tel.substr(tel.indexOf('+')+3,2));
+                  
                   this.initializeArray(contact[i], resp.substring(resp.length-3));
                     break;
 
@@ -88,6 +93,7 @@ export class CityToState {
 
                            // Ex: 02121 xxxxx-xxxx
                      resp =  this.findStateFromTelephoneNumber(tel.substr(3,2));
+                    
                   this.initializeArray(contact[i], resp.substring(resp.length-3));
                   break;
 
@@ -95,6 +101,7 @@ export class CityToState {
                 else{
                          // Ex: 021 xxxxx-xxxx
                      resp =  this.findStateFromTelephoneNumber(tel.substr(1,2));
+                     
                         this.initializeArray(contact[i], resp.substring(resp.length-3));
                           break;
                   
@@ -114,6 +121,7 @@ export class CityToState {
 
                          // Ex: 21 xxxxx-xxxx
                     resp =  this.findStateFromTelephoneNumber(tel.substr(0,2));
+                    
                     
                         this.initializeArray(contact[i], resp.substring(resp.length-3));
                           break;
@@ -139,6 +147,9 @@ export class CityToState {
 
     
     public findStateFromTelephoneNumber(ddd : string) : string {
+
+     
+      
 
         let dddNumber = Number.parseInt(ddd);
 
@@ -227,6 +238,8 @@ export class CityToState {
            else if (dddNumber == 63)
     
         return "Tocantins - TO";
+
+        return "RESTO - ##";
 
       
 

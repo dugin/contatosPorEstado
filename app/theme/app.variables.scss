@@ -25,15 +25,18 @@
 // Both iOS and MD colors can be further customized if colors
 // are different per mode.
 
-$toolbar-background: #222;
+$toolbar-background: #329f77;
+
+$font-family-ios-base: 'Raleway', sans-serif;
+$font-family-md-base: 'Raleway', sans-serif;
 
 $background-color: #F6F6F6;
 
 $colors: (
-  primary:    #387ef5,
-  secondary:  #32db64,
-  danger:     #cc0000,
-  light:      #f4f4f4,
-  dark:       #222,
+  primary:    #329f77,
+  secondary:  #d6ebe3,
+  danger:     #9f325a,
+  light:      #ededed,
+  dark:       #838383,
   favorite:   #69BB7B
 );
