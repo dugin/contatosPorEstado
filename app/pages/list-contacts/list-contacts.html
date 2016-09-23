@@ -44,7 +44,7 @@
       <ion-item *ngFor="let contact of group.contacts" (click)='selectContact(contact)' >
         
       
-            <ion-icon name="contacts" item-left></ion-icon>
+            <ion-icon name="contact" item-left></ion-icon>
   
                  {{contact.name.formatted}}
        </ion-item>
@@ -55,7 +55,7 @@
 </ion-content>
 
 
- <ul  class="alpha_sidebar">
+ <ul [style.visibility]="list_index_visibility" class="alpha_sidebar">
     
       <li (click)="gotoList(i)"   *ngFor="let letter of alphabet | async; let i = index; let last = last"> 
           

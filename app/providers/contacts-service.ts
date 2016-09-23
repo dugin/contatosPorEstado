@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Contacts, Contact } from 'ionic-native';
-import {CityToState} from '../util/city-to-state-util';
+import {CityToStateUtil} from '../util/city-to-state-util';
 
 declare var google: any;
 
 @Injectable()
 export class ContactsService {
 
-    c : CityToState;
+  
 
      constructor() {
 
-        this.c = new CityToState();
+     
         
     }
 
@@ -25,9 +25,9 @@ export class ContactsService {
 
          Contacts.find(['*']).then((contacts :Contact[]) => {
 
-              this.c.rearrangeTelephoneNumbers(contacts, est);
+              CityToStateUtil.rearrangeTelephoneNumbers(contacts, est);
 
-              resolve(CityToState.contactsStruct);
+              resolve(CityToStateUtil.contactsStruct);
 
      
 
@@ -39,7 +39,7 @@ export class ContactsService {
     }
 
        stateShortToFull (state: string){
-          return this.c.stateShortToFull(state);
+          return CityToStateUtil.stateShortToFull(state);
       }
   
 

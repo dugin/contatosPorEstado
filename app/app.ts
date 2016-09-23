@@ -17,6 +17,7 @@ export class MyApp {
     platform.ready().then(() => {
 
         this.hideSplashScreen();
+       
 
        NativeStorage.getItem('state').then( data => { 
 

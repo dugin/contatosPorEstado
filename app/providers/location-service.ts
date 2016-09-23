@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
+import {AlertController} from 'ionic-angular';
+
 declare var google: any;
-import { Diagnostic } from 'ionic-native';
-import { AlertController } from 'ionic-angular';
+
+
 
 @Injectable()
 export class LocationService {
 
-     constructor(public alertCtrl: AlertController) {
+   
+
+     constructor() {
         
     }
 
    public getMyLocation () : Promise<String>{
 
-       
-
-       this.checkLocationPermission();
+         
 
 let promise: Promise<String> = new Promise((resolve, reject) =>{
 
+     
 let locationOptions = {timeout: 10000, enableHighAccuracy: true};
  navigator.geolocation.getCurrentPosition(  (position) => {
 
@@ -59,57 +62,19 @@ geocoder.geocode(
  
         );
 
+
+    
+
 });
 
 return promise;
 
-  }
-
-
-  checkLocationPermission (){
-
-      Diagnostic.isLocationAvailable().then( data =>{
-          console.log(data);
-          
-            if(!data)
-                 this.showAlert("Localização", "Necessitamos do GPS habilidado para obter a sua localização.")
-
-
-            else{
-                Diagnostic.requestLocationAuthorization().then(data =>{
-                    console.log(data);
-
-
-                    if(!data)
-                    this.showAlert("Localização", "Necessitamos da sua autorização para obter a sua localização.")
-
-                })
-            }
-      })
-
-      
+    
 
 
   }
 
-
-   showAlert(title: string, text: string) {
-
-      let d = new Diagnostic();
-       
-
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: text ,
-      buttons: [{
-          text: 'OK',
-          handler: data => {
-            
-      }}]
-    });
-    alert.present();
-  }
-
+  
 
 
 }

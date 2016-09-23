@@ -24,12 +24,14 @@ export class ListContactsPage {
   groupedContacts = [];
   alphabet: Promise<string[]>;
   list_index_margin: any;
+  list_index_visibility: any;
    itensCount = new Array<number>() ;
  
 
   constructor(private popoverCtrl: PopoverController, private platform: Platform,  private viewCtrl: ViewController ,private navCtrl: NavController, public contactsService : ContactsService, private navParams: NavParams) {
 
     this.loading = true;
+    this.list_index_visibility = 'hidden';
     
     console.log("ListContactsPage constructor");
      
@@ -174,6 +176,8 @@ export class ListContactsPage {
    
       
  dynamicallyChangeCSS (indexArray : Array<string>){
+
+   this.list_index_visibility = 'visible';
 
      let height =  this.platform.height() / indexArray.length;
      this.list_index_margin = height -10;

@@ -1,6 +1,6 @@
 import { Contacts, Contact } from 'ionic-native';
 
-export class CityToState {
+export class CityToStateUtil {
 
      static contactsStruct: { [key:string]:Contact[]; } = {};
 
@@ -11,12 +11,15 @@ export class CityToState {
 
 
 
-   public rearrangeTelephoneNumbers(contact: Contact[], myState : string ){
-        CityToState.contactsStruct = {};
+  public static  rearrangeTelephoneNumbers(contact: Contact[], myState : string ){
+        CityToStateUtil.contactsStruct = {};
 
        let resp :string;
 
         for(let i = 0; i < contact.length; i++){
+
+          console.log(contact[i].id);
+          
                         
                             if(contact[i].phoneNumbers != null){
 
@@ -146,7 +149,7 @@ export class CityToState {
 
 
     
-    public findStateFromTelephoneNumber(ddd : string) : string {
+     public static  findStateFromTelephoneNumber(ddd : string) : string {
 
      
       
@@ -246,26 +249,26 @@ export class CityToState {
 
     }
 
-    private initializeArray(c: Contact, est: string){
+   private static  initializeArray(c: Contact, est: string){
 
       
 
       let e = est.replace(/ /g,'');
       
      
-     if(CityToState.contactsStruct[e] == null){
-        CityToState.contactsStruct[e]= new Array<Contact>();
-        CityToState.contactsStruct[e].push(c)
+     if(CityToStateUtil.contactsStruct[e] == null){
+        CityToStateUtil.contactsStruct[e]= new Array<Contact>();
+        CityToStateUtil.contactsStruct[e].push(c)
      }
 
         else{
-            CityToState.contactsStruct[e].push(c)
+            CityToStateUtil.contactsStruct[e].push(c)
         }
 
     }
 
 
-    public stateShortToFull (state: string){
+     public static  stateShortToFull (state: string){
 
 
         switch(state){

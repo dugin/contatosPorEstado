@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, ViewController} from 'ionic-angular';
+import {NavController, ViewController, AlertController} from 'ionic-angular';
 import {LocationService} from '../../providers/location-service';
 import { LoadingController, Loading } from 'ionic-angular';
 import {ListContactsPage} from '../list-contacts/list-contacts';
 import { NativeStorage } from 'ionic-native';
+import {PermissionsUtil} from '../../util/permissions-util';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class LocationPage  {
   loading: boolean ;
   next: boolean;
 
-  constructor(private navCtrl: NavController,private viewCtrl: ViewController ,public locationService : LocationService,
+  constructor(private alertCtrl: AlertController, private navCtrl: NavController,private viewCtrl: ViewController ,public locationService : LocationService,
    public loadingCtrl: LoadingController) { 
   }
 
@@ -32,7 +33,14 @@ export class LocationPage  {
        this.estado = "";
      
         this.next = false;
-       this.loading = true;
+     
+
+         PermissionsUtil.checkLocationPermission().then(permissionType =>{
+
+     this.setMessage(permissionType);
+
+
+        
 
      this.locationService.getMyLocation().then (city => {
         this.loading = false;
@@ -45,7 +53,7 @@ export class LocationPage  {
 
         console.log(error);
         
-
+ });
      })
 
   }
@@ -53,6 +61,12 @@ export class LocationPage  {
    
   nextPage(){
 
+       PermissionsUtil.checkContactPermission().then(permissionType =>{
+
+    
+        this.setMessage(permissionType);
+
+        this.loading = false;
         this.persistMyState();
 
      if( this.viewCtrl.enableBack()){
@@ -69,7 +83,11 @@ export class LocationPage  {
      this.navCtrl.push(ListContactsPage, {
       city: this.estado
         });
-  }
+
+         
+       }
+
+        });
   }
 
   persistMyState(){
@@ -80,6 +98,57 @@ export class LocationPage  {
   );
 
   }
+
+  setMessage(messageType: number) {
+
+            switch (messageType){
+          case PermissionsUtil.LOCATION_DISABLED:
+        this.showAlert("Localização", "Necessitamos do GPS habilidado para obter a sua localização.", PermissionsUtil.LOCATION_DISABLED);
+            break;
+
+            case PermissionsUtil.LOCATION_UNAUTHORIZED:
+           this.showAlert("Localização", "Necessitamos da sua autorização para obter a sua localização.", PermissionsUtil.LOCATION_UNAUTHORIZED);
+           break;
+
+            case PermissionsUtil.CONTACT_UNAUTHORIZED:
+           this.showAlert("Localização", "Necessitamos da sua autorização para organizar seus contatos.", PermissionsUtil.LOCATION_UNAUTHORIZED);
+           break;
+
+        default :
+         this.loading = true;
+        return;
+
+          
+      }
+
+
+  }
+
+   showAlert(title: string, text: string, permissionType: number) {
+
+    
+
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text ,
+      buttons: [{
+          text: 'OK',
+          handler: data => {
+              PermissionsUtil.redirectUser(permissionType);
+              if(permissionType != PermissionsUtil.CONTACT_UNAUTHORIZED)
+               setTimeout(() => {
+           this.loading = true;
+                 }, 1000);
+            
+            
+      }}]
+    });
+    alert.present();
+  }
+
+
+  
+
 
   
 }
