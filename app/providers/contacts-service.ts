@@ -7,7 +7,7 @@ declare var google: any;
 @Injectable()
 export class ContactsService {
 
-  
+  private  static  lstFiveCts : Promise<Contact[]>;
 
      constructor() {
 
@@ -25,6 +25,13 @@ export class ContactsService {
 
          Contacts.find(['*']).then((contacts :Contact[]) => {
 
+            
+             
+
+              ContactsService.lstFiveCts =  Promise.resolve(this.setLastFiveContacts(contacts));
+
+         
+
               CityToStateUtil.rearrangeTelephoneNumbers(contacts, est);
 
               resolve(CityToStateUtil.contactsStruct);
@@ -36,6 +43,19 @@ export class ContactsService {
          
       })
         return promise;
+    }
+
+    private setLastFiveContacts (contacts :Contact[]) : Contact[]{
+        
+
+      return contacts.slice(contacts.length-5).reverse();
+
+
+    }
+    getlastFiveContacts () : Promise<Contact[]> {
+
+        return ContactsService.lstFiveCts;
+
     }
 
        stateShortToFull (state: string){

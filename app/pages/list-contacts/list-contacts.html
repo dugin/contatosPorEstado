@@ -19,7 +19,7 @@
 
 
 
-<ion-content class="list-contacts">
+<ion-content class="list-contacts" padding-bottom>
 
   <!--
    <button (click)="savefn()">Add Contact</button>
@@ -38,28 +38,50 @@
       </div>
 
 
+ <ion-list [bufferRatio]="4" [approxItemHeight]=" '40px' "  [virtualScroll]="test" [headerFn]="myHeaderFn" >
+
+   <ion-item-divider light *virtualHeader="let header">
+    {{ header }}
+  </ion-item-divider>
+
+
+  <button  ion-item *virtualItem="let contact" ion-item (click)='selectContact(contact)'>
+ 
+      <ion-avatar item-left>
+      <img [src]=getImgSanatized(contact) /> 
+    </ion-avatar>  
+    
+                 {{contact.name.formatted}}
+       </button>
+
+</ion-list>
+
+
+
+<!--
 <ion-item-group *ngFor="let group of groupedContacts" class="alpha_list">
  
       <ion-item-divider light>{{group.letter}}</ion-item-divider>
-      <ion-item *ngFor="let contact of group.contacts" (click)='selectContact(contact)' >
-        
-      
-            <ion-icon name="contact" item-left></ion-icon>
-  
+      <button ion-item *ngFor="let contact of group.contacts" (click)='selectContact(contact)' >
+
+       <ion-avatar item-left>
+      <img [src]=getImgSanatized(contact) /> 
+    </ion-avatar>  
+    
                  {{contact.name.formatted}}
-       </ion-item>
+       </button>
  
     </ion-item-group>
 
-    
+    -->
 </ion-content>
 
 
- <ul [style.visibility]="list_index_visibility" class="alpha_sidebar">
+ <ul [style.top]="isIOS ?  '58px' : '112px'" [style.visibility]="list_index_visibility" class="alpha_sidebar">
     
       <li (click)="gotoList(i)"   *ngFor="let letter of alphabet | async; let i = index; let last = last"> 
           
-           <button dark small clear [style.height]= "last ? '20px' : list_index_margin + 'px'" >{{letter}}</button>
+           <button dark small clear [style.height]= "list_index_margin + 'px'" >{{letter}}</button>
       </li>
     </ul>
 

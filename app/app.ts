@@ -3,9 +3,10 @@ import {Platform, ionicBootstrap} from 'ionic-angular';
 import {StatusBar, Splashscreen, NativeStorage} from 'ionic-native';
 import {LocationPage} from './pages/location/location';
 import {ListContactsPage} from './pages/list-contacts/list-contacts';
+import {TabsPage} from './pages/tabs/tabs';
 
 @Component({
-  template: '<ion-nav [root]="rootPage"></ion-nav>'
+  template:  '<ion-nav [root]="rootPage"></ion-nav>'
 })
 export class MyApp {
 
@@ -21,7 +22,7 @@ export class MyApp {
 
        NativeStorage.getItem('state').then( data => { 
 
-      this.rootPage = ListContactsPage;
+      this.rootPage = TabsPage;
      },
     error =>{  
       console.log(error);
@@ -40,6 +41,8 @@ export class MyApp {
     });
   }
 
+  
+
    hideSplashScreen() {
     
      if (Splashscreen) {
@@ -50,4 +53,13 @@ export class MyApp {
       }
 }
 
-ionicBootstrap(MyApp);
+ionicBootstrap(MyApp, null,{tabsHideOnSubPages:"true", platforms: {
+    android: {
+      tabsPlacement: 'top'
+    },
+    ios: {
+      tabsPlacement: 'bottom',
+      statusbarPadding: true
+    }
+}
+});

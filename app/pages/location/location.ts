@@ -2,10 +2,9 @@ import {Component} from '@angular/core';
 import {NavController, ViewController, AlertController} from 'ionic-angular';
 import {LocationService} from '../../providers/location-service';
 import { LoadingController, Loading } from 'ionic-angular';
-import {ListContactsPage} from '../list-contacts/list-contacts';
+import {TabsPage} from '../tabs/tabs';
 import { NativeStorage } from 'ionic-native';
 import {PermissionsUtil} from '../../util/permissions-util';
-
 
 @Component({
   templateUrl: 'build/pages/location/location.html',
@@ -13,18 +12,26 @@ import {PermissionsUtil} from '../../util/permissions-util';
 })
 export class LocationPage  {
 
+ 
   loader: Loading;
   estado: String;
   loading: boolean ;
   next: boolean;
 
-  constructor(private alertCtrl: AlertController, private navCtrl: NavController,private viewCtrl: ViewController ,public locationService : LocationService,
+  constructor( private alertCtrl: AlertController, private navCtrl: NavController,private viewCtrl: ViewController ,public locationService : LocationService,
    public loadingCtrl: LoadingController) { 
+console.log("LocationPage constructor ");
+
+  
   }
 
  
   onChange(changes) {
+  
+     if( changes != null)
      this.next = true;
+     else
+     this.next = false;
   }
 
 
@@ -38,9 +45,6 @@ export class LocationPage  {
          PermissionsUtil.checkLocationPermission().then(permissionType =>{
 
      this.setMessage(permissionType);
-
-
-        
 
      this.locationService.getMyLocation().then (city => {
         this.loading = false;
@@ -61,31 +65,19 @@ export class LocationPage  {
    
   nextPage(){
 
-       PermissionsUtil.checkContactPermission().then(permissionType =>{
+     
+        PermissionsUtil.checkContactPermission().then(permissionType =>{   
 
     
         this.setMessage(permissionType);
 
         this.loading = false;
         this.persistMyState();
-
-     if( this.viewCtrl.enableBack()){
-
-    
-        this.navCtrl.setRoot(ListContactsPage,{
-      city: this.estado
-        }); 
-   
-      
-     } 
           
-  else {
-     this.navCtrl.push(ListContactsPage, {
+      
+      this.navCtrl.setRoot(TabsPage, {
       city: this.estado
         });
-
-         
-       }
 
         });
   }
@@ -111,7 +103,7 @@ export class LocationPage  {
            break;
 
             case PermissionsUtil.CONTACT_UNAUTHORIZED:
-           this.showAlert("Localização", "Necessitamos da sua autorização para organizar seus contatos.", PermissionsUtil.LOCATION_UNAUTHORIZED);
+           this.showAlert("Contatos", "Necessitamos da sua autorização para organizar seus contatos.", PermissionsUtil.LOCATION_UNAUTHORIZED);
            break;
 
         default :

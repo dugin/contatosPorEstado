@@ -31,17 +31,32 @@
    </div>
 
 <div class="botoes"> 
-      <button danger class="btn" (click) = "copyToClipboard(number.value)">
+      <button clear danger class="btn" (click) = "copyToClipboard(number.value)">
           <ion-icon name="copy" large></ion-icon>
             </button>
 
-             <button danger class="btn" (click) = "callNumber(number.value)">
+             <button clear danger class="btn" (click) = "callNumber(number.value)">
       <ion-icon name="call" large></ion-icon>
+        
+    
+         </button>
+
+               <button clear danger class="btn" (click) = "sendViaWhatsapp(number.value, contact)">
+      <ion-icon name="logo-whatsapp" large></ion-icon>
         
     
          </button>
         
         </div>
+
+ 
+        <div class="botoes">
+
+          <p> Copiar </p>
+             <p id="second"> Ligar </p>
+                <p id="last"> Whatsapp </p>
+          
+           </div>
   
   </ion-item>
 

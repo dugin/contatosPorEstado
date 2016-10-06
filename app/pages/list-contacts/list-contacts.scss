@@ -1,6 +1,7 @@
+
 .list-contacts {
 
-   
+ 
 
 
  div.spinner {
@@ -38,7 +39,7 @@ ion-spinner {
   background-color: $background-color;
   list-style-type: none;
 	position: absolute;
-	top:50px;
+  
 	right: 	0;
 	z-index: 100000;
   margin-top: 10px;
@@ -47,8 +48,22 @@ ion-spinner {
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
 }
+
+
+.alpha_sidebar li {
+
+padding: 0;
+margin: 0;
+
+}
+
+
 .alpha_sidebar li button{
-  width: 20px;
+  width: 100%;
 	font-size: 10px;
+  padding: 0 3px 0 3px;
+  margin: 0;
+
+
   
 }

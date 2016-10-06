@@ -22,13 +22,18 @@ export class OptionsPage {
 
   
     
-this.viewCtrl.destroy();
+
 
 this.navCtrl.push(LocationPage);
 
 
  
 
+  }
+
+  ionViewDidLeave(){
+
+    this.navCtrl.remove(0);
   }
 
 }

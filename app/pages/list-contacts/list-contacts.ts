@@ -1,10 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams,Platform, Content, ViewController, PopoverController  } from 'ionic-angular';
+import { NavController, VirtualScroll,  NavParams,Platform, Content, ViewController, PopoverController  } from 'ionic-angular';
 import { Contact, NativeStorage } from 'ionic-native';
 import {ContactsService} from '../../providers/contacts-service';
 import {State} from '../../interface/state-interface';
 import {OptionsPage} from '../options/options';
 import {DetailsContactsPage} from '../details-contacts/details-contacts';
+import {DomSanitizationService} from '@angular/platform-browser';
+
+declare var $: JQueryStatic;
 
 /*
   Generated class for the ListContactsPage page.
@@ -16,109 +19,129 @@ import {DetailsContactsPage} from '../details-contacts/details-contacts';
   templateUrl: 'build/pages/list-contacts/list-contacts.html',
   providers: [ContactsService]
 })
-export class ListContactsPage {
+export class ListContactsPage   {
       @ViewChild(Content) content: Content;
+       @ViewChild(VirtualScroll) virtualScroll: VirtualScroll;
 
   loading: boolean;
   noContact: boolean = false;
   groupedContacts = [];
   alphabet: Promise<string[]>;
   list_index_margin: any;
+  isIOS: boolean;
   list_index_visibility: any;
    itensCount = new Array<number>() ;
+   test = new Array<Contact>();
+  
+
+
  
 
-  constructor(private popoverCtrl: PopoverController, private platform: Platform,  private viewCtrl: ViewController ,private navCtrl: NavController, public contactsService : ContactsService, private navParams: NavParams) {
+  constructor( private sanitizer:DomSanitizationService,private popoverCtrl: PopoverController, private platform: Platform,  private viewCtrl: ViewController ,private navCtrl: NavController, public contactsService : ContactsService, private navParams: NavParams) {
+
+    if(platform.is('ios'))
+      this.isIOS = true;
 
     this.loading = true;
     this.list_index_visibility = 'hidden';
-    
-    console.log("ListContactsPage constructor");
-     
    
-   
-    if(navParams.get('city') != null){
-    contactsService.arrangeContacts(navParams.get('city')).then( (contactStruct: { [key:string]:Contact[]; }) =>{
-
-          this.groupContacts(contactStruct);
- 
-    })   
-    }
+    if(navParams.get('city') != null)
+    this.arrangeContacts( navParams.get('city'));
+  
 
     else {
+
     NativeStorage.getItem('state').then(
     data => { 
 
-      console.log(data);
+      this.arrangeContacts(data.property);
+   },
       
-      contactsService.arrangeContacts(data.property).then( (contactStruct: { [key:string]:Contact[]; }) =>{
-
-          this.groupContacts(contactStruct);
-    
-    })    },
-      
-    error =>{ console.error(error)
-    }
+    error =>{ console.error(error) }
   );
     }
   }
   
-  
+  arrangeContacts (myState: string){
+
+     this.contactsService.arrangeContacts(myState).then( (contactStruct: { [key:string]:Contact[]; }) =>{
+
+          this.groupContacts(contactStruct);
+  this.enableLastContactTab()
+    })   
+
+  }
 
   
     gotoList(index){
 
-       let move;
+       let move: number;
        let x = this.content.getContentDimensions().scrollHeight / this.itensCount[this.itensCount.length-1]
 
-       if(index == 0)
-       move = 0;
-       else
+       if(index == 0){
+            
+             this.content.scrollTo(0,2).then ( () =>{
+                 console.log($(".virtual-scroll"));
+                                 
+  });
+
+      
+       }
+
+     
+       else{
        move =  this.itensCount[index-1] * x;
 
-          console.log("mova: "+ move);
+        this.content.jsScroll((e) =>{
+                console.log("Aqui: "+e);
+            })
+        
      
-       
+          this.content.scrollTo(5,move).then ( (e) =>{
 
-        this.content.scrollTo(0, move);
+            console.log(e);
+    
+    
+                     
+         
+             }); 
+     
+          
+       }
+
+      
+     
+      
 
     }
 
-  testIfImgAvailable (contact : Contact) :string{
 
-      /*
+    enableLastContactTab (){
 
-      if(contact.photos != null){
+ this.navCtrl.parent.getByIndex(1).enabled = 'true'; 
 
+    }
+
+   
+
+  getImgSanatized (contact : Contact) : any{
+
+        if(contact.photos != null){
         let photo = contact.photos[0].value;
+       
+         return  this.sanitizer.bypassSecurityTrustUrl(photo);
+        }
 
-    
-     let photo_split=photo.split("%3A");
+        return 'images/person_avatar.png';
 
-     console.log(photo_split);
      
-       photo="content://media/external/images/media/"+photo_split[1];
-
-    
-         return photo;
-
-    
-      }
-       */
-
-           return  "images/ic_perm_identity_black_48px.svg";
-
-    
-
-
   }
 
   selectContact(contact : Contact) {
 
-   
-
     this.navCtrl.push(DetailsContactsPage, {
       contact: contact
+     
         });
 
   }
@@ -145,18 +168,23 @@ export class ListContactsPage {
       totalItens += contactStruct[State[state]].length +1;
      this.itensCount.push( totalItens ) ; 
 
-    
-    
-          if(State[state].localeCompare("RESTO") == 0)
-        arr.push("##");
-        else
+         
          arr.push(State[state]);
     
 
    let sortedContacts = contactStruct[State[state]].sort((a : Contact,b : Contact) => {
-    return  a.name.formatted.localeCompare(b.displayName);
+    return  a.name.formatted.localeCompare(b.name.formatted);
   
 }); 
+
+     
+     sortedContacts[0].note = State[state];
+      
+      this.test = this.test.concat(sortedContacts);
+     
+      
+      
+      
 
    let newGroup = {
                     letter: this.contactsService.stateShortToFull(State[state]),
@@ -172,15 +200,39 @@ export class ListContactsPage {
          this.alphabet = Promise.resolve(arr);
         
          this.loading = false;
+  
+ 
+       
+      
        }
+
+       myHeaderFn(record, recordIndex, records) {
+
+     
+         
+        
+        if( this.test[recordIndex].note != null)
+          if( this.test[recordIndex].note.length == 2)
+            return this.contactsService.stateShortToFull(this.test[recordIndex].note);
+        
+         
+       
+       
+  return null;
+}
    
       
  dynamicallyChangeCSS (indexArray : Array<string>){
 
    this.list_index_visibility = 'visible';
 
-     let height =  this.platform.height() / indexArray.length;
-     this.list_index_margin = height -10;
+     let height =  this.content.getContentDimensions().scrollHeight / indexArray.length;
+    
+     if( this.platform.is('ios'))
+     this.list_index_margin = height;
+
+     else
+      this.list_index_margin = height -2.5;
      
 
  }
