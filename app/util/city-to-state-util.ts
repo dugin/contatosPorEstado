@@ -18,9 +18,7 @@ export class CityToStateUtil {
 
         for(let i = 0; i < contact.length; i++){
 
-         
-          
-                        
+       
                             if(contact[i].phoneNumbers != null){
 
         for(let j = 0; j < contact[i].phoneNumbers.length; j++){

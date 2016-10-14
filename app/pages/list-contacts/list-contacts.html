@@ -38,27 +38,7 @@
       </div>
 
 
- <ion-list [bufferRatio]="4" [approxItemHeight]=" '40px' "  [virtualScroll]="test" [headerFn]="myHeaderFn" >
 
-   <ion-item-divider light *virtualHeader="let header">
-    {{ header }}
-  </ion-item-divider>
-
-
-  <button  ion-item *virtualItem="let contact" ion-item (click)='selectContact(contact)'>
- 
-      <ion-avatar item-left>
-      <img [src]=getImgSanatized(contact) /> 
-    </ion-avatar>  
-    
-                 {{contact.name.formatted}}
-       </button>
-
-</ion-list>
-
-
-
-<!--
 <ion-item-group *ngFor="let group of groupedContacts" class="alpha_list">
  
       <ion-item-divider light>{{group.letter}}</ion-item-divider>
@@ -68,12 +48,12 @@
       <img [src]=getImgSanatized(contact) /> 
     </ion-avatar>  
     
-                 {{contact.name.formatted}}
+          <span  *ngIf="contact.name">  <span *ngIf="contact.name.formatted">    {{contact.name.formatted}} </span> </span>
        </button>
  
     </ion-item-group>
 
-    -->
+ 
 </ion-content>
 
 

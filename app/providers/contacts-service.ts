@@ -9,11 +9,7 @@ export class ContactsService {
 
   private  static  lstFiveCts : Promise<Contact[]>;
 
-     constructor() {
-
-     
-        
-    }
+     constructor() { }
 
    
 
@@ -25,12 +21,8 @@ export class ContactsService {
 
          Contacts.find(['*']).then((contacts :Contact[]) => {
 
-            
-             
+              ContactsService.lstFiveCts =  Promise.resolve(this.setLastContacts(contacts, 10));
 
-              ContactsService.lstFiveCts =  Promise.resolve(this.setLastFiveContacts(contacts));
-
-         
 
               CityToStateUtil.rearrangeTelephoneNumbers(contacts, est);
 
@@ -45,14 +37,28 @@ export class ContactsService {
         return promise;
     }
 
-    private setLastFiveContacts (contacts :Contact[]) : Contact[]{
-        
+    private setLastContacts (contacts :Contact[], qtdContacts: number) : Contact[]{
 
-      return contacts.slice(contacts.length-5).reverse();
+     
+      let arr = new Array<Contact>();
+        
+        for( let i =contacts.length-1 ; i> -1; i-- ){
+            
+              if(contacts[i] != null)
+               if(contacts[i].name != null && contacts[i].phoneNumbers != null)
+             if(contacts[i].name.formatted.length != 0 && contacts[i].phoneNumbers.length != 0){
+               arr.push(contacts[i]);
+             }
+            
+            if (arr.length == qtdContacts )
+            break; 
+        }
+
+      return arr;
 
 
     }
-    getlastFiveContacts () : Promise<Contact[]> {
+    getlastContacts () : Promise<Contact[]> {
 
         return ContactsService.lstFiveCts;
 

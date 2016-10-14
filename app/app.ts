@@ -17,16 +17,21 @@ export class MyApp {
 
     platform.ready().then(() => {
 
+       //   alert("Plataforma pronta!");
+
         this.hideSplashScreen();
        
 
        NativeStorage.getItem('state').then( data => { 
+
+         // alert("Já inseri estado : "+ data.property);
 
       this.rootPage = TabsPage;
      },
     error =>{  
       console.log(error);
       
+        // alert("Vou para a página de localizacao");
       this.rootPage = LocationPage; 
     });
           
@@ -47,6 +52,7 @@ export class MyApp {
     
      if (Splashscreen) {
         setTimeout(() => {
+         // alert("Vou esconder Splashscreen");
           Splashscreen.hide();
       }, 1000);
       }   

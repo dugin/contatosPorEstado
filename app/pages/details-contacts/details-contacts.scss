@@ -1,14 +1,21 @@
 .details-contacts {
 
-    
+    div.item {
+        
+    /* To correctly align image, regardless of content height: */
+    vertical-align: top;
+    display: inline-block;
+    /* To horizontally center images and caption */
+    text-align: center;
+    /* The width of the container also implies margin around the images. */
+    width: auto;
+}
 
-    .btn  {
-        width: 30px;
-        margin-left:  10px;
-        margin-right: 10px;
-        display: inline-block;
-    }
-
+.caption {
+    /* Make the caption a block so it occupies its own line. */
+    font-size: 10px;
+    display: block;
+}
 
     .texto {
         padding-top: 10px;
@@ -20,28 +27,6 @@
         float: right;
     }
 
-     .botoes p{
-
-        margin-top: 0;
-        padding-top: 2px;
-        text-align: center;
-        width: 30px;
-        font-size: 10px;
-        margin-left:  10px;
-        margin-right: 5px;
-        display: inline-block;
-    }
-
-    #last {
-        margin-right: 20px;
-       
-    }
-
-     #second {
-        padding-left: 8px;
-       
-    }
-
     @media only screen 
 and (min-device-width : 320px) 
 and (max-device-width : 480px) { 
@@ -50,23 +35,6 @@ and (max-device-width : 480px) {
 
         padding-left: 7px;
 
-    }
-
-     #last {
-        margin-right: 17px;
-       
-    }
-
-     .btn   {
-    
-        margin-left:  5px;
-        margin-right: 5px;
-    }
-
-    .botoes p{
-
-         margin-left:  0px;
-        margin-right: 4px;
     }
 
    ion-item  item-inner {

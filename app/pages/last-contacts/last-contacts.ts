@@ -25,7 +25,7 @@ lastFiveContacts :Contact[];
     
     
    
-    this.contactsService.getlastFiveContacts().then ( data =>{
+    this.contactsService.getlastContacts().then ( data =>{
 
           this.lastFiveContacts = data;
 

@@ -19,7 +19,7 @@
 
   <ion-card>
   <ion-card-header>
-      <center> <b> {{contact.name.formatted}} </b> </center>
+      <center> <b  *ngIf="contact.name">  <span *ngIf="contact.name.formatted">{{contact.name.formatted}}  </span></b> </center>
   </ion-card-header>
 
   <ion-list *ngFor="let number of contact.phoneNumbers">
@@ -30,33 +30,36 @@
    <h3 > <b>{{number.value}} </b></h3>
    </div>
 
-<div class="botoes"> 
-      <button clear danger class="btn" (click) = "copyToClipboard(number.value)">
+ <div class="botoes">
+  <div class="item"> 
+      <button clear danger (click) = "copyToClipboard(number.value)">
           <ion-icon name="copy" large></ion-icon>
             </button>
+              <span class="caption">Copiar</span>
+  </div>
 
-             <button clear danger class="btn" (click) = "callNumber(number.value)">
+  <div class="item"> 
+             <button clear danger  (click) = "callNumber(number.value)">
       <ion-icon name="call" large></ion-icon>
         
     
          </button>
+           <span class="caption">Ligar</span>
 
-               <button clear danger class="btn" (click) = "sendViaWhatsapp(number.value, contact)">
+         </div>
+
+<div class="item"> 
+               <button clear danger  (click) = "sendViaWhatsapp(number.value, contact)">
       <ion-icon name="logo-whatsapp" large></ion-icon>
         
     
          </button>
+           <span class="caption">Whatsapp</span>
         
         </div>
+     </div>
 
- 
-        <div class="botoes">
 
-          <p> Copiar </p>
-             <p id="second"> Ligar </p>
-                <p id="last"> Whatsapp </p>
-          
-           </div>
   
   </ion-item>
 

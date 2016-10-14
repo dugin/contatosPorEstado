@@ -7,8 +7,6 @@ import {OptionsPage} from '../options/options';
 import {DetailsContactsPage} from '../details-contacts/details-contacts';
 import {DomSanitizationService} from '@angular/platform-browser';
 
-declare var $: JQueryStatic;
-
 /*
   Generated class for the ListContactsPage page.
 
@@ -21,7 +19,7 @@ declare var $: JQueryStatic;
 })
 export class ListContactsPage   {
       @ViewChild(Content) content: Content;
-       @ViewChild(VirtualScroll) virtualScroll: VirtualScroll;
+    
 
   loading: boolean;
   noContact: boolean = false;
@@ -31,7 +29,7 @@ export class ListContactsPage   {
   isIOS: boolean;
   list_index_visibility: any;
    itensCount = new Array<number>() ;
-   test = new Array<Contact>();
+
   
 
 
@@ -81,7 +79,7 @@ export class ListContactsPage   {
        if(index == 0){
             
              this.content.scrollTo(0,2).then ( () =>{
-                 console.log($(".virtual-scroll"));
+                
                                  
   });
 
@@ -92,12 +90,8 @@ export class ListContactsPage   {
        else{
        move =  this.itensCount[index-1] * x;
 
-        this.content.jsScroll((e) =>{
-                console.log("Aqui: "+e);
-            })
-        
      
-          this.content.scrollTo(5,move).then ( (e) =>{
+          this.content.scrollTo(0,move).then ( (e) =>{
 
             console.log(e);
     
@@ -149,6 +143,7 @@ export class ListContactsPage   {
    groupContacts(contactStruct : { [key:string]:Contact[]; }){
 
     
+     
      let arr = new Array<string>();
 
      let totalItens = 0;
@@ -157,6 +152,7 @@ export class ListContactsPage   {
         this.noContact = true;
 
         else
+
       for (var state in State) {
   
           var isValueProperty = parseInt(state, 10) >= 0
@@ -173,18 +169,15 @@ export class ListContactsPage   {
     
 
    let sortedContacts = contactStruct[State[state]].sort((a : Contact,b : Contact) => {
+     if (a.name != null && b.name != null)
+       if (a.name.formatted != null && b.name.formatted != null)
     return  a.name.formatted.localeCompare(b.name.formatted);
+    
+        return -1;
   
 }); 
 
-     
-     sortedContacts[0].note = State[state];
-      
-      this.test = this.test.concat(sortedContacts);
-     
-      
-      
-      
+   
 
    let newGroup = {
                     letter: this.contactsService.stateShortToFull(State[state]),
@@ -206,20 +199,6 @@ export class ListContactsPage   {
       
        }
 
-       myHeaderFn(record, recordIndex, records) {
-
-     
-         
-        
-        if( this.test[recordIndex].note != null)
-          if( this.test[recordIndex].note.length == 2)
-            return this.contactsService.stateShortToFull(this.test[recordIndex].note);
-        
-         
-       
-       
-  return null;
-}
    
       
  dynamicallyChangeCSS (indexArray : Array<string>){

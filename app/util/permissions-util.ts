@@ -26,6 +26,7 @@ static checkLocationPermission () : Promise<number>{
             }
 
             else{
+                
                 Diagnostic.isLocationAuthorized().then (data =>{
 
                           if(!data){
