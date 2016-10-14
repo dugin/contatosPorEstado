@@ -26,17 +26,21 @@ static checkLocationPermission () : Promise<number>{
             }
 
             else{
+                
                 Diagnostic.isLocationAuthorized().then (data =>{
 
                           if(!data){
                       Diagnostic.requestLocationAuthorization().then((data :string) =>{
                     console.log("requestLocationAuthorization: "+data );
-               
-                  if(data.localeCompare(Diagnostic.permissionStatus.GRANTED) != 0 )
-                         return resolve(this.LOCATION_UNAUTHORIZED);
+                  
+                    
+                  if(data.localeCompare(Diagnostic.permissionStatus.GRANTED) == 0 || data.localeCompare('authorized_when_in_use') == 0  )
+                            return resolve(-1);   
+                        
 
                   else
-                  return resolve(-1);       
+                   return resolve(this.LOCATION_UNAUTHORIZED);
+                 
                 });
                           }
 
@@ -68,12 +72,13 @@ static checkLocationPermission () : Promise<number>{
             if(!isPermitted){
                    Diagnostic.requestContactsAuthorization().then((data :string) =>{
                     console.log("requestContactsAuthorization: "+data );
-               
-                  if(data.localeCompare(Diagnostic.permissionStatus.GRANTED) != 0 )
-                         return resolve(this.CONTACT_UNAUTHORIZED);
+                
+                  if(data.localeCompare(Diagnostic.permissionStatus.GRANTED) == 0 || data.localeCompare('authorized') == 0  )
+                            return resolve(-1);   
+                        
 
                   else
-                  return resolve(-1);       
+                  return resolve(this.CONTACT_UNAUTHORIZED);     
                 });
             }
 

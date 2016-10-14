@@ -18,9 +18,7 @@ export class CityToStateUtil {
 
         for(let i = 0; i < contact.length; i++){
 
-          console.log(contact[i].id);
-          
-                        
+       
                             if(contact[i].phoneNumbers != null){
 
         for(let j = 0; j < contact[i].phoneNumbers.length; j++){
@@ -77,7 +75,7 @@ export class CityToStateUtil {
              }
              else{
                         // gringa
-                      this.initializeArray(contact[i], "RESTO");
+                      this.initializeArray(contact[i], "##");
                         break;
                   
              }
@@ -88,7 +86,7 @@ export class CityToStateUtil {
                  if(tel.substr(0,2).localeCompare("00") == 0){
 
                         // Ex: 0047... gringa
-                    this.initializeArray(contact[i], "RESTO");
+                    this.initializeArray(contact[i], "##");
                         break;
                   
                  }
@@ -134,7 +132,7 @@ export class CityToStateUtil {
              
              else{
                        // o que sobrar é gringo
-                        this.initializeArray(contact[i], "RESTO");
+                        this.initializeArray(contact[i], "##");
                        
                           break;
 
@@ -242,7 +240,7 @@ export class CityToStateUtil {
     
         return "Tocantins - TO";
 
-        return "RESTO - ##";
+        return "## - ##";
 
       
 
@@ -325,7 +323,7 @@ export class CityToStateUtil {
             return "Sergipe";
                 case "TO":
             return "Tocantins";
-                 case "RESTO":
+                 case "##":
             return "Outros Países";
 
         }

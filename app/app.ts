@@ -3,9 +3,10 @@ import {Platform, ionicBootstrap} from 'ionic-angular';
 import {StatusBar, Splashscreen, NativeStorage} from 'ionic-native';
 import {LocationPage} from './pages/location/location';
 import {ListContactsPage} from './pages/list-contacts/list-contacts';
+import {TabsPage} from './pages/tabs/tabs';
 
 @Component({
-  template: '<ion-nav [root]="rootPage"></ion-nav>'
+  template:  '<ion-nav [root]="rootPage"></ion-nav>'
 })
 export class MyApp {
 
@@ -16,16 +17,21 @@ export class MyApp {
 
     platform.ready().then(() => {
 
+       //   alert("Plataforma pronta!");
+
         this.hideSplashScreen();
        
 
        NativeStorage.getItem('state').then( data => { 
 
-      this.rootPage = ListContactsPage;
+         // alert("Já inseri estado : "+ data.property);
+
+      this.rootPage = TabsPage;
      },
     error =>{  
       console.log(error);
       
+        // alert("Vou para a página de localizacao");
       this.rootPage = LocationPage; 
     });
           
@@ -40,14 +46,26 @@ export class MyApp {
     });
   }
 
+  
+
    hideSplashScreen() {
     
      if (Splashscreen) {
         setTimeout(() => {
+         // alert("Vou esconder Splashscreen");
           Splashscreen.hide();
       }, 1000);
       }   
       }
 }
 
-ionicBootstrap(MyApp);
+ionicBootstrap(MyApp, null,{tabsHideOnSubPages:"true", platforms: {
+    android: {
+      tabsPlacement: 'top'
+    },
+    ios: {
+      tabsPlacement: 'bottom',
+      statusbarPadding: true
+    }
+}
+});

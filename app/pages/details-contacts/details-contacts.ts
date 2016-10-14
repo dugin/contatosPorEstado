@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { Contact, Clipboard } from 'ionic-native';
-
+import { NavController, NavParams, ToastController, Platform } from 'ionic-angular';
+import { Contact, Clipboard, SocialSharing } from 'ionic-native';
+import {WhatsappNumberUtil} from '../../util/whatsapp-number-util'
 declare var CallNumber: any;
 
 /*
@@ -16,19 +16,47 @@ declare var CallNumber: any;
 export class DetailsContactsPage {
 
   contact : Contact;
+ 
 
-  constructor(public toastCtrl: ToastController, private navCtrl: NavController, private navParams :NavParams) {
+  constructor(public toastCtrl: ToastController, private navCtrl: NavController, private navParams :NavParams, private platform: Platform) {
 
     this.contact =  this.navParams.get('contact');
 
+  }
+
+  sendViaWhatsapp(number: string, contact: Contact){
+    
+   let tel ;
+
+    if (this.platform.is('ios'))
+        tel = contact.id;
+
+else{
+  tel  = WhatsappNumberUtil.transformNumber(number);
    
+
+   if(tel.localeCompare('excessao') == 0 )
+        alert(number);
+   
+} 
+
+ console.log(tel);
+    SocialSharing.shareViaWhatsAppToReceiver(tel,"",null, null).then((d) =>{
+
+      console.log("then: "+d);
+      
+
+    }).catch( (err) =>{
+
+      console.log("err: "+ err);
+      
+    });
+
   }
 
   callNumber(number: string){
 
-   console.log(number);
-    
-
+ 
     CallNumber.prototype.callNumber((success =>{
 
       console.log('Launched dialer! - '+success);
@@ -38,7 +66,7 @@ export class DetailsContactsPage {
 
     })  , number, true);
   
- 
+  
 
   }
 

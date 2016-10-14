@@ -33,20 +33,34 @@ geocoder.geocode(
        (results, status)  =>{
         if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
-                   
-                 let estado = results[0].address_components[5].short_name;
-                 let cidade = results[0].address_components[3].long_name;
+                       console.log(results[0]);
+                       let address = results[0].address_components;
+                        let cidade;
+                        let estado;
+                  for(let i = 0; i < address.length; i++ ){
+
+                      if(address[i].types.indexOf("locality") > -1)
+                         cidade = address[i].long_name;
+
+                      if( address[i].types.indexOf("administrative_area_level_1") > -1)
+                         estado = address[i].short_name;
+                
 
                  
-                   resolve(cidade + ' / '+ estado);
+                 
+                   }
+                   if( cidade != null && estado != null)
+                     resolve(cidade + ' / '+ estado);
+                     else
+                        reject("Cidade ou estado não encontrado");
                    
                 }
                 else  {
-                    alert("address not found");
+                    alert("Endereço não encontrado");
                 }
         }
          else {
-            alert("Geocoder failed due to: " + status);
+            alert("Erro");
         }
     }
 );
